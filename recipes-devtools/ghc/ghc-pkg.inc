@@ -18,11 +18,7 @@ SETUPFILE = "$([ -f Setup.lhs ] && echo Setup.lhs || echo Setup.hs)"
 LOCAL_GHC_PACKAGE_DATABASE = "${S}/local-packages.db"
 export GHC_PACKAGE_PATH = "${LOCAL_GHC_PACKAGE_DATABASE}:"
 
-# ghc libs have (and always had) broken rpath disable sanity checking for now
-INSANE_SKIP_${PN} = "rpaths"
-INSANE_SKIP_${PN}-dev = "rpaths staticdev"
-INSANE_SKIP_${PN}-dbg = "rpaths"
-
+INSANE_SKIP_${PN}-dev = "staticdev"
 
 do_configure_prepend_class-target() {
     # This is prepend for the target

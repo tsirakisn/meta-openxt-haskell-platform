@@ -160,10 +160,10 @@ do_configure() {
         # The previous instance of this in devshell was also changed
         CFLAGS="${CFLAGS} -std=gnu89" \
         CPP="${CPP}" \
-        ${RUNSETUP} configure --package-db=${LOCAL_GHC_PACKAGE_DATABASE} --enable-shared --with-compiler=ghc-${GHC_VERSION} --ghc-options='-pgmc ./ghc-cc -pgml ./ghc-ld' --with-gcc=./ghc-cc --prefix=${prefix} --libsubdir=ghc-local/\$pkgid ${CABAL_CONFIGURE_EXTRA_OPTS}
+        ${RUNSETUP} configure --package-db=${LOCAL_GHC_PACKAGE_DATABASE} --enable-shared --with-compiler=ghc-${GHC_VERSION} --ghc-options='-dynload deploy -pgmc ./ghc-cc -pgml ./ghc-ld' --with-gcc=./ghc-cc --prefix=${prefix} --libsubdir=ghc-local/\$pkgid ${CABAL_CONFIGURE_EXTRA_OPTS}
 }
 
 do_compile() {
-        ${RUNSETUP} --ghc-options='-pgmc ./ghc-cc -pgml ./ghc-ld' --with-gcc=./ghc-cc build
+        ${RUNSETUP} --ghc-options='-dynload deploy -pgmc ./ghc-cc -pgml ./ghc-ld' --with-gcc=./ghc-cc build
 }
 

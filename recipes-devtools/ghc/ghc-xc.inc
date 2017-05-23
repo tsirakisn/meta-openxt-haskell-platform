@@ -9,5 +9,5 @@ do_configure() {
         # The previous instance of this in devshell was also changed
         CFLAGS="${CFLAGS}" \
         CPP="${CPP}" \
-	${RUNSETUP} configure ${EXTRA_CABAL_CONF} --package-db=${LOCAL_GHC_PACKAGE_DATABASE} --ghc-options='-pgml ./ghc-ld' --with-hsc2hs-ld="${S}/ghc-ld"  --enable-shared --with-compiler=ghc-${GHC_VERSION} --prefix=${prefix} --extra-include-dirs="${STAGING_INCDIR}" --extra-lib-dirs="${STAGING_LIBDIR}" --libsubdir=ghc-local/\$pkgid --with-gcc=./ghc-cc
+	${RUNSETUP} configure ${EXTRA_CABAL_CONF} --package-db=${LOCAL_GHC_PACKAGE_DATABASE} --ghc-options='-dynload deploy -pgml ./ghc-ld' --with-hsc2hs-ld="${S}/ghc-ld"  --enable-shared --with-compiler=ghc-${GHC_VERSION} --prefix=${prefix} --extra-include-dirs="${STAGING_INCDIR}" --extra-lib-dirs="${STAGING_LIBDIR}" --libsubdir=ghc-local/\$pkgid --with-gcc=./ghc-cc
 }

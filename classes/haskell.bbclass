@@ -8,7 +8,7 @@ SECTION = "devel/haskell"
 DEPENDS_append_class-target += " \
     ghc-runtime \
 "
-DEPENDS_append_class-native += " \
+DEPENDS += " \
     ghc-native \
 "
 PACKAGES = " \

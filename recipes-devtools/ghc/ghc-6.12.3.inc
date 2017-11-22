@@ -18,5 +18,8 @@ do_compile() {
 }
 
 do_install() {
+    # There is a race somewhere triggered when installing utils/hsc2hs/template-hsc.h
+    # Work-around until upgrade.
+    install -m 0755 -d ${D}/${libdir}/${BPN}-${PV}
     oe_runmake install DESTDIR="${D}"
 }

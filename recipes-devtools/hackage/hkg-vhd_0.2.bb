@@ -14,7 +14,3 @@ DEPENDS += " \
     hkg-cereal \
     hkg-text \
 "
-
-INSANE_SKIP_${PN} = "already-stripped"
-
-PR = "r1"

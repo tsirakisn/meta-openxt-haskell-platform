@@ -9,6 +9,4 @@ SRC_URI[md5sum] = "9635c348e70c0446e74783e7c267050c"
 SRC_URI[sha256sum] = "c32c10b95446ecb938dc6cd34585187efd3fcb4b21f7d0c7cbd646ba94c87516"
 DEPENDS += "hkg-polyparse"
 
-INHIBIT_SYSROOT_STRIP = "1"
-
 PR = "r1"

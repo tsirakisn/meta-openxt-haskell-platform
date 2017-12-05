@@ -106,6 +106,7 @@ do_configure() {
     ${RUNGHC} Setup.*hs clean --verbose
     ${RUNGHC} Setup.*hs configure \
         ${EXTRA_CABAL_CONF} \
+        --disable-executable-stripping \
         --package-db="${GHC_PACKAGE_DATABASE}" \
         --ghc-options='-dynload sysdep
                        -pgmc ./ghc-cc

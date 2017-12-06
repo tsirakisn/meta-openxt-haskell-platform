@@ -8,7 +8,7 @@ SECTION = "devel/haskell"
 DEPENDS_append_class-target += " \
     ghc-runtime \
 "
-DEPENDS += " \
+DEPENDS_append = " \
     ghc-native \
 "
 PACKAGES = " \
@@ -18,23 +18,23 @@ PACKAGES = " \
     ${PN}-dbg \
     ${PN}-dev \
 "
-FILES_${PN} =+ " \
+FILES_${PN}_append = " \
     ${libdir}/${HPN}-${HPV}/ghc-*/libH*.so \
     ${libdir}/ghc-*/package.conf.d/*.conf \
     ${bindir}/* \
 "
-FILES_${PN}-doc =+ " \
+FILES_${PN}-doc_append = " \
     ${datadir}/* \
 "
-FILES_${PN}-staticdev =+ " \
+FILES_${PN}-staticdev_append = " \
     ${libdir}/${HPN}-${HPV}/ghc-*/libHS*.a \
 "
-FILES_${PN}-dbg =+ " \
+FILES_${PN}-dbg_append = " \
     ${libdir}/${HPN}-${HPV}/ghc-*/*.o \
     ${libdir}/${HPN}-${HPV}/ghc-*/.debug \
     ${prefix}/src/debug \
 "
-FILES_${PN}-dev =+ " \
+FILES_${PN}-dev_append = " \
     ${libdir}/${HPN}-${HPV}/ghc-*/* \
 "
 

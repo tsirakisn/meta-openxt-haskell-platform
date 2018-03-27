@@ -40,3 +40,10 @@ DEPENDS += " \
 do_configure() {
     ./configure --prefix=${prefix} --enable-shared
 }
+
+do_sysroot_ghc_pkg_db() {
+    ghc-pkg recache
+}
+addtask do_sysroot_ghc_pkg_db before do_configure after do_prepare_recipe_sysroot
+do_sysroot_ghc_pkg_db[doc] = "Amend the paths in the package database local to the recipes' sysroot."
+do_sysroot_ghc_pkg_db[dirs] = "${B}"

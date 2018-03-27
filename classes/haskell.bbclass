@@ -8,7 +8,7 @@ SECTION = "devel/haskell"
 DEPENDS_append_class-target += " \
     ghc-runtime \
 "
-DEPENDS_append_class-native += " \
+DEPENDS_append = " \
     ghc-native \
 "
 PACKAGES = " \
@@ -18,23 +18,23 @@ PACKAGES = " \
     ${PN}-dbg \
     ${PN}-dev \
 "
-FILES_${PN} =+ " \
+FILES_${PN}_append = " \
     ${libdir}/${HPN}-${HPV}/ghc-*/libH*.so \
     ${libdir}/ghc-*/package.conf.d/*.conf \
     ${bindir}/* \
 "
-FILES_${PN}-doc =+ " \
+FILES_${PN}-doc_append = " \
     ${datadir}/* \
 "
-FILES_${PN}-staticdev =+ " \
+FILES_${PN}-staticdev_append = " \
     ${libdir}/${HPN}-${HPV}/ghc-*/libHS*.a \
 "
-FILES_${PN}-dbg =+ " \
+FILES_${PN}-dbg_append = " \
     ${libdir}/${HPN}-${HPV}/ghc-*/*.o \
     ${libdir}/${HPN}-${HPV}/ghc-*/.debug \
     ${prefix}/src/debug \
 "
-FILES_${PN}-dev =+ " \
+FILES_${PN}-dev_append = " \
     ${libdir}/${HPN}-${HPV}/ghc-*/* \
 "
 
@@ -48,13 +48,14 @@ do_update_local_pkg_database() {
     rm -rf "${GHC_PACKAGE_DATABASE}"
     ghc-pkg init "${GHC_PACKAGE_DATABASE}"
 }
-addtask do_update_local_pkg_database before do_configure after do_patch
+# Run after do_prepare_recipe_sysroot to ensure that the recipe's sysroot is
+# populated by every item in DEPENDS before we update the local package
+# database. runghc will not be able to process dependencies otherwise, neither
+# will ghc-pkg be there if not installed on the host.
+addtask do_update_local_pkg_database before do_configure after do_prepare_recipe_sysroot
 do_update_local_pkg_database[doc] = "Put together a local Haskell package database for runghc to use, and amend configuration to match bitbake environment."
-# Ensure that the recipe's sysroot is populated by every item in DEPENDS before
-# we update the local package database. runghc will not be able to process
-# dependencies otherwise, neither will ghc-pkg be there if not installed on the
-# host.
-do_update_local_pkg_database[deptask] = "do_populate_sysroot"
+# See: bitbake.git: 67a7b8b0 build: don't use $B as the default cwd for functions
+do_update_local_pkg_database[dirs] = "${B}"
 
 do_update_local_pkg_database_append_class-target() {
     ghc_version=$(ghc-pkg --version)
@@ -101,6 +102,7 @@ EOF
 }
 addtask do_makeup_wrappers before do_configure after do_patch
 do_makeup_wrappers[doc] = "Generate local wrappers for the compiler to pass bitbake environment through ghc."
+do_makeup_wrappers[dirs] = "${B}"
 
 do_configure() {
     ${RUNGHC} Setup.*hs clean --verbose
@@ -136,6 +138,7 @@ do_local_package_conf() {
 }
 addtask do_local_package_conf before do_install after do_compile
 do_local_package_conf[doc] = "Generate Haskell package configuration."
+do_local_package_conf[dirs] = "${B}"
 
 # Amend the rpath to match target environment. This is because a lot of dynamic
 # libraries will be installed in non-standard sub-directories of ${libdir}.  It
@@ -172,6 +175,7 @@ do_fixup_rpath_class-target() {
 }
 addtask do_fixup_rpath after do_install before do_package
 do_fixup_rpath[doc] = "Amend rpath set by GHC to comply with target's environment."
+do_fixup_rpath[dirs] = "${B}"
 
 do_install() {
     ${RUNGHC} Setup.*hs copy --copy-prefix="${D}/${prefix}" --verbose

@@ -14,6 +14,9 @@ SRC_URI = " \
     file://0003-Run-finalizers-after-updating-the-stable-pointer-tab.patch \
     file://0004-Fix-crash-with-large-objects-7919.patch \
     file://0005-Fix-an-arithmetic-overflow-bug-causing-crashes-with-.patch \
+    file://0006-stdcall-x86-64.patch \
+    file://0007-x64-more-stack.patch \
+    file://0008-7919-large-objects.patch \
 "
 SRC_URI[md5sum] = "4c2663c2eff833d7b9f39ef770eefbd6"
 SRC_URI[sha256sum] = "6cbdbe415011f2c7d15e4d850758d8d393f70617b88cb3237d2c602bb60e5e68"

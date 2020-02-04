@@ -1,0 +1,10 @@
+--- a/utils/hsc2hs/ghc.mk
++++ b/utils/hsc2hs/ghc.mk
+@@ -54,6 +54,7 @@ install: install_utils/hsc2hs_dist_insta
+ 
+ .PHONY: install_utils/hsc2hs_dist_install
+ install_utils/hsc2hs_dist_install: utils/hsc2hs/template-hsc.h
++	$(INSTALL_DIR) "$(DESTDIR)$(topdir)"
+ 	$(INSTALL_HEADER) $(INSTALL_OPTS) $< "$(DESTDIR)$(topdir)"
+ 
+ BINDIST_EXTRAS += utils/hsc2hs/template-hsc.h

@@ -38,6 +38,12 @@ FILES_${PN}-dev_append = " \
     ${libdir}/${HPN}-${HPV}/ghc-*/* \
 "
 
+CONFIGURE_FILES += " \
+    ${S}/Setup.hs \
+    ${S}/Setup.lhs \
+    ${S}/${HPN}.cabal \
+"
+
 RUNGHC = "runghc"
 
 GHC_PACKAGE_PATH_class-native = "${STAGING_LIBDIR_NATIVE}/ghc-6.12.3/package.conf.d"

@@ -12,3 +12,7 @@ BBCLASSEXTEND = "native"
 HPN ?= "${@d.getVar("BPN", True).split("hkg-", 1)[1]}"
 
 inherit haskell
+
+CONFIGURE_FILES += " \
+    ${S}/${HPN}-${HPV}.conf \
+"

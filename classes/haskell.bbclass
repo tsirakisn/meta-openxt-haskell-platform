@@ -50,6 +50,11 @@ GHC_PACKAGE_PATH_class-native = "${STAGING_LIBDIR_NATIVE}/ghc-6.12.3/package.con
 GHC_PACKAGE_PATH_class-target = "${STAGING_LIBDIR}/ghc-6.12.3/package.conf.d"
 export GHC_PACKAGE_PATH
 
+# GHC has been patched to disable generating PIE code, so we need to disable
+# PIE to be able to link any haskell programs.
+SECURITY_CFLAGS = "${SECURITY_NOPIE_CFLAGS}"
+SECURITY_LDFLAGS = ""
+
 # Bitbake will amend the WORKDIR paths it finds (staging stage 2). This works to
 # our advantage for native class, target class need to be configured with their
 # target dependencies, so substitute the target paths for WORKDIR starging so

@@ -10,4 +10,4 @@ SRC_URI[sha256sum] = "fdbcbc28196d616b449bf3e46c30dcd5577dc92f290458e2dbdbfc5a65
 
 PR = "r1"
 
-RDEPENDS_${HPN} += "libc6"
+RDEPENDS:${HPN} += "libc6"

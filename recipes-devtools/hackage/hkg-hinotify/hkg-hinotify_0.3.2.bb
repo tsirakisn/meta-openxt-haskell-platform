@@ -7,7 +7,7 @@ inherit hackage
 SRC_URI[md5sum] = "1105bc75012bd2a299181c47b21cac39"
 SRC_URI[sha256sum] = "88c86540528f9d36bedc5779c975fbd0fd1277a4e143b9a078871ba7c2ce293f"
 
-FILESEXTRAPATHS_prepend := "${THISDIR}/patches:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/patches:"
 SRC_URI =+ " \
     file://hinotify-fix-watching-symlinks.patch \
 "

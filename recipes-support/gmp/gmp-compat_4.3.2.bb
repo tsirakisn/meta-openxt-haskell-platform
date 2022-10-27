@@ -8,7 +8,7 @@ LIC_FILES_CHKSUM = " \
 "
 SECTION = "devel"
 
-FILESEXTRAPATHS_prepend := "${THISDIR}/patches:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/patches:"
 SRC_URI = "https://gmplib.org/download/gmp/archive/gmp-${PV}.tar.bz2 \
            file://autoconf-am-c-prototypes.patch \
 "
@@ -27,7 +27,7 @@ inherit autotools
 
 S = "${WORKDIR}/gmp-${PV}"
 
-do_install_append() {
+do_install:append() {
 # Remove files conflicting with gmp>4
     rm -rf ${D}/${datadir}
     rm -rf ${D}/${libdir}/gmp

@@ -6,7 +6,7 @@ require ghc-${PV}.inc
 PACKAGES = " \
     ${PN} \
 "
-FILES_${PN} = " \
+FILES:${PN} = " \
     ${libdir}/ghc-${PV}/libHSrts_debug-ghc${PV}.so \
     ${libdir}/ghc-${PV}/libHSrts_thr_debug-ghc${PV}.so \
     ${libdir}/ghc-${PV}/libHSrts-ghc${PV}.so \
@@ -32,7 +32,7 @@ FILES_${PN} = " \
     ${libdir}/ghc-${PV}/haskell98-*/*.so \
     ${libdir}/ghc-${PV}/integer-gmp-*/*.so \
 "
-INSANE_SKIP_${PN} = "installed-vs-shipped"
+INSANE_SKIP:${PN} = "installed-vs-shipped"
 
 DEPENDS += " \
     ghc-native \

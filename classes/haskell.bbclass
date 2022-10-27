@@ -5,10 +5,10 @@ HPV ?= "${PV}"
 
 SECTION = "devel/haskell"
 
-DEPENDS_append_class-target += " \
+DEPENDS:append:class-target += " \
     ghc-runtime \
 "
-DEPENDS_append = " \
+DEPENDS:append = " \
     ghc-native \
 "
 PACKAGES = " \
@@ -18,23 +18,23 @@ PACKAGES = " \
     ${PN}-dbg \
     ${PN}-dev \
 "
-FILES_${PN}_append = " \
+FILES:${PN}:append = " \
     ${libdir}/${HPN}-${HPV}/ghc-*/libH*.so \
     ${libdir}/ghc-*/package.conf.d/*.conf \
     ${bindir}/* \
 "
-FILES_${PN}-doc_append = " \
+FILES:${PN}-doc:append = " \
     ${datadir}/* \
 "
-FILES_${PN}-staticdev_append = " \
+FILES:${PN}-staticdev:append = " \
     ${libdir}/${HPN}-${HPV}/ghc-*/libHS*.a \
 "
-FILES_${PN}-dbg_append = " \
+FILES:${PN}-dbg:append = " \
     ${libdir}/${HPN}-${HPV}/ghc-*/*.o \
     ${libdir}/${HPN}-${HPV}/ghc-*/.debug \
     ${prefix}/src/debug \
 "
-FILES_${PN}-dev_append = " \
+FILES:${PN}-dev:append = " \
     ${libdir}/${HPN}-${HPV}/ghc-*/* \
 "
 
@@ -46,8 +46,8 @@ CONFIGURE_FILES += " \
 
 RUNGHC = "runghc"
 
-GHC_PACKAGE_PATH_class-native = "${STAGING_LIBDIR_NATIVE}/ghc-6.12.3/package.conf.d"
-GHC_PACKAGE_PATH_class-target = "${STAGING_LIBDIR}/ghc-6.12.3/package.conf.d"
+GHC_PACKAGE_PATH:class-native = "${STAGING_LIBDIR_NATIVE}/ghc-6.12.3/package.conf.d"
+GHC_PACKAGE_PATH:class-target = "${STAGING_LIBDIR}/ghc-6.12.3/package.conf.d"
 export GHC_PACKAGE_PATH
 
 # GHC has been patched to disable generating PIE code, so we need to disable
@@ -59,7 +59,7 @@ SECURITY_LDFLAGS = ""
 # our advantage for native class, target class need to be configured with their
 # target dependencies, so substitute the target paths for WORKDIR starging so
 # ghc-pkg finds them.
-do_configure_prepend_class-target() {
+do_configure:prepend:class-target() {
     ghc_version=$(ghc-pkg --version)
     ghc_version=${ghc_version##* }
     for pkgconf in ${STAGING_LIBDIR}/ghc-${ghc_version}/package.conf.d/*.conf; do
@@ -117,7 +117,7 @@ do_local_package_conf[dirs] = "${B}"
 do_fixup_rpath() {
     :
 }
-do_fixup_rpath_class-target() {
+do_fixup_rpath:class-target() {
     ghc_version=$(ghc-pkg --version)
     ghc_version=${ghc_version##* }
 

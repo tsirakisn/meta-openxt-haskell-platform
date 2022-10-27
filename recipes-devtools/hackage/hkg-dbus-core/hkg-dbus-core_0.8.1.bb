@@ -7,7 +7,7 @@ inherit hackage
 SRC_URI[md5sum] = "f635e99147a6ef7b1fa3212c6767fa83"
 SRC_URI[sha256sum] = "6da338e54d1cd4bcfbbc12bf6af08f7e90b420cb809f59e8aa94451cd17e08d1"
 
-FILESEXTRAPATHS_prepend := "${THISDIR}/patches:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/patches:"
 SRC_URI =+ " \
     file://expose-customisable-transport.patch \
     file://functor-fix.patch \

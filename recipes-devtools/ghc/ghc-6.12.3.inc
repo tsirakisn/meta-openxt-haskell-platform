@@ -1,6 +1,6 @@
 require ghc-common.inc
 
-FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
 SRC_URI = " \
     https://downloads.haskell.org/~ghc/${PV}/ghc-${PV}-src.tar.bz2 \
     file://build.mk \

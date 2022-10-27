@@ -23,7 +23,7 @@ do_configure() {
     echo "STANDARD_OPTS += \"-I${STAGING_INCDIR_NATIVE}\"" >> rts/ghc.mk
 }
 
-do_install_append() {
+do_install:append() {
     install -m 755 "${WORKDIR}/ghc-cc" "${D}${bindir}/ghc-cc"
     install -m 755 "${WORKDIR}/ghc-ld" "${D}${bindir}/ghc-ld"
 }

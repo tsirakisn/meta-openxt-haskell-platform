@@ -1,7 +1,7 @@
 SUMMARY = "The GNU Multiple Precision Arithmetic Library"
 DESCRIPTION = "GMP is a free library for arbitrary precision arithmetic, operating on signed integers, rational numbers, and floating-point numbers. There is no practical limit to the precision except the ones implied by the available memory in the machine GMP runs on. GMP has a rich set of functions, and the functions have a regular interface."
 HOMEPAGE = "https://gmplib.org/"
-LICENSE = "LGPLv2.1+ & GPLv2"
+LICENSE = "LGPL-2.1-or-later & GPL-2.0-only"
 LIC_FILES_CHKSUM = " \
     file://COPYING;md5=d32239bcb673463ab874e80d47fae504 \
     file://COPYING.LIB;md5=6a6a8e020838b23406c81b19c1d46df6 \

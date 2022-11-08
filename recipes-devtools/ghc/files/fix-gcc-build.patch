@@ -1,0 +1,154 @@
+commit eb39f98891482366cf1130fe58d728b93f0dd49f
+Author: Michal Terepeta <michal.terepeta@gmail.com>
+Date:   Sun May 13 18:34:03 2018 -0400
+
+    Fix a few GCC warnings
+    
+    GCC 8 now generates warnings for incompatible function pointer casts
+    [-Werror=cast-function-type]. Apparently there are a few of those in rts
+    code, which makes `./validate` unhappy (since we compile with `-Werror`)
+    
+    This commit tries to fix these issues by changing the functions to have
+    the correct type (and, if necessary, moving the casts into those
+    functions).
+    
+    For instance, hash/comparison function are declared (`Hash.h`) to take
+    `StgWord` but we want to use `StgWord64[2]` in `StaticPtrTable.c`.
+    Instead of casting the function pointers, we can cast the `StgWord`
+    parameter to `StgWord*`. I think this should be ok since `StgWord`
+    should be the same size as a pointer.
+    
+    Signed-off-by: Michal Terepeta <michal.terepeta@gmail.com>
+    
+    Test Plan: ./validate
+    
+    Reviewers: bgamari, erikd, simonmar
+    
+    Reviewed By: bgamari
+    
+    Subscribers: rwbarton, thomie, carter
+    
+    Differential Revision: https://phabricator.haskell.org/D4673
+
+diff --git a/includes/rts/OSThreads.h b/includes/rts/OSThreads.h
+index abb3120088..d2c4a6a54e 100644
+--- a/includes/rts/OSThreads.h
++++ b/includes/rts/OSThreads.h
+@@ -166,7 +166,7 @@ extern OSThreadId osThreadId      ( void );
+ extern void shutdownThread        ( void )   GNUC3_ATTRIBUTE(__noreturn__);
+ extern void yieldThread           ( void );
+ 
+-typedef void OSThreadProcAttr OSThreadProc(void *);
++typedef void* OSThreadProcAttr OSThreadProc(void *);
+ 
+ extern int  createOSThread        ( OSThreadId* tid, char *name,
+                                     OSThreadProc *startProc, void *param);
+diff --git a/rts/Hash.c b/rts/Hash.c
+index b9a3cf6f33..658187b944 100644
+--- a/rts/Hash.c
++++ b/rts/Hash.c
+@@ -77,8 +77,9 @@ hashWord(const HashTable *table, StgWord key)
+ }
+ 
+ int
+-hashStr(const HashTable *table, char *key)
++hashStr(const HashTable *table, StgWord w)
+ {
++    const char *key = (char*) w;
+ #ifdef x86_64_HOST_ARCH
+     StgWord h = XXH64 (key, strlen(key), 1048583);
+ #else
+@@ -440,8 +441,7 @@ allocHashTable(void)
+ HashTable *
+ allocStrHashTable(void)
+ {
+-    return allocHashTable_((HashFunction *)hashStr,
+-                           (CompareFunction *)compareStr);
++    return allocHashTable_(hashStr, compareStr);
+ }
+ 
+ void
+diff --git a/rts/Hash.h b/rts/Hash.h
+index 1dde314d0e..be388fb62f 100644
+--- a/rts/Hash.h
++++ b/rts/Hash.h
+@@ -56,7 +56,7 @@ typedef int HashFunction(const HashTable *table, StgWord key);
+ typedef int CompareFunction(StgWord key1, StgWord key2);
+ HashTable * allocHashTable_(HashFunction *hash, CompareFunction *compare);
+ int hashWord(const HashTable *table, StgWord key);
+-int hashStr(const HashTable *table, char *key);
++int hashStr(const HashTable *table, StgWord key);
+ 
+ /* Freeing hash tables
+  */
+diff --git a/rts/StaticPtrTable.c b/rts/StaticPtrTable.c
+index 5d2737a262..7711377d7f 100644
+--- a/rts/StaticPtrTable.c
++++ b/rts/StaticPtrTable.c
+@@ -21,23 +21,24 @@ static Mutex spt_lock;
+ #endif
+ 
+ /// Hash function for the SPT.
+-static int hashFingerprint(HashTable *table, StgWord64 key[2]) {
++static int hashFingerprint(const HashTable *table, StgWord key) {
++  const StgWord64* ptr = (StgWord64*) key;
+   // Take half of the key to compute the hash.
+-  return hashWord(table, (StgWord)key[1]);
++  return hashWord(table, *(ptr + 1));
+ }
+ 
+ /// Comparison function for the SPT.
+-static int compareFingerprint(StgWord64 ptra[2], StgWord64 ptrb[2]) {
+-  return ptra[0] == ptrb[0] && ptra[1] == ptrb[1];
++static int compareFingerprint(StgWord a, StgWord b) {
++  const StgWord64* ptra = (StgWord64*) a;
++  const StgWord64* ptrb = (StgWord64*) b;
++  return *ptra == *ptrb && *(ptra + 1) == *(ptrb + 1);
+ }
+ 
+ void hs_spt_insert_stableptr(StgWord64 key[2], StgStablePtr *entry) {
+   // hs_spt_insert is called from constructor functions, so
+   // the SPT needs to be initialized here.
+   if (spt == NULL) {
+-    spt = allocHashTable_( (HashFunction *)hashFingerprint
+-                         , (CompareFunction *)compareFingerprint
+-                         );
++    spt = allocHashTable_(hashFingerprint, compareFingerprint);
+ #if defined(THREADED_RTS)
+     initMutex(&spt_lock);
+ #endif
+diff --git a/rts/Task.c b/rts/Task.c
+index 758ae10ffc..ac86311844 100644
+--- a/rts/Task.c
++++ b/rts/Task.c
+@@ -416,7 +416,7 @@ workerTaskStop (Task *task)
+ 
+ #if defined(THREADED_RTS)
+ 
+-static void OSThreadProcAttr
++static void* OSThreadProcAttr
+ workerStart(Task *task)
+ {
+     Capability *cap;
+@@ -442,6 +442,8 @@ workerStart(Task *task)
+     traceTaskCreate(task, cap);
+ 
+     scheduleWorker(cap,task);
++
++    return NULL;
+ }
+ 
+ /* N.B. must take all_tasks_mutex */
+diff --git a/rts/posix/OSThreads.c b/rts/posix/OSThreads.c
+index 9cf42aa246..7dcf0eed15 100644
+--- a/rts/posix/OSThreads.c
++++ b/rts/posix/OSThreads.c
+@@ -134,7 +134,7 @@ int
+ createOSThread (OSThreadId* pId, char *name STG_UNUSED,
+                 OSThreadProc *startProc, void *param)
+ {
+-  int result = pthread_create(pId, NULL, (void *(*)(void *))startProc, param);
++  int result = pthread_create(pId, NULL, startProc, param);
+   if (!result) {
+     pthread_detach(*pId);
+ #if defined(HAVE_PTHREAD_SETNAME_NP)

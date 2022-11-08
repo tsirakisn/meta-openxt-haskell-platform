@@ -21,10 +21,10 @@ Subject: [PATCH] Use "order only constraints" for directories There are now
  utils/runghc/ghc.mk             |  3 +--
  14 files changed, 49 insertions(+), 74 deletions(-)
 
-Index: ghc-6.12.3/compiler/ghc.mk
+Index: ghc-8.4.4/compiler/ghc.mk
 ===================================================================
---- ghc-6.12.3.orig/compiler/ghc.mk	2017-09-20 23:43:01.633111998 -0400
-+++ ghc-6.12.3/compiler/ghc.mk	2017-09-20 23:43:04.489739135 -0400
+--- ghc-8.4.4.orig/compiler/ghc.mk	2017-09-20 23:43:01.633111998 -0400
++++ ghc-8.4.4/compiler/ghc.mk	2017-09-20 23:43:04.489739135 -0400
 @@ -141,8 +141,7 @@
  
  PLATFORM_H = ghc_boot_platform.h
@@ -45,10 +45,10 @@ Index: ghc-6.12.3/compiler/ghc.mk
  	"$(RM)" $(RM_OPTS) $@
  	@echo "Creating $@..."
  	@echo "#ifndef __PLATFORM_H__"  >$@
-Index: ghc-6.12.3/ghc.mk
+Index: ghc-8.4.4/ghc.mk
 ===================================================================
---- ghc-6.12.3.orig/ghc.mk	2010-06-09 14:10:12.000000000 -0400
-+++ ghc-6.12.3/ghc.mk	2017-09-20 23:46:24.803635395 -0400
+--- ghc-8.4.4.orig/ghc.mk	2010-06-09 14:10:12.000000000 -0400
++++ ghc-8.4.4/ghc.mk	2017-09-20 23:46:24.803635395 -0400
 @@ -88,6 +88,11 @@
  # expands to the directoy of a rule that uses a % pattern.
  .SECONDEXPANSION:
@@ -102,10 +102,10 @@ Index: ghc-6.12.3/ghc.mk
  	"$(GENPRIMOP_INPLACE)" --make-haskell-wrappers < $< > $@
  
  # -----------------------------------------------------------------------------
-Index: ghc-6.12.3/rts/ghc.mk
+Index: ghc-8.4.4/rts/ghc.mk
 ===================================================================
---- ghc-6.12.3.orig/rts/ghc.mk	2017-09-20 23:43:01.633111998 -0400
-+++ ghc-6.12.3/rts/ghc.mk	2017-09-20 23:43:04.493072422 -0400
+--- ghc-8.4.4.orig/rts/ghc.mk	2017-09-20 23:43:01.633111998 -0400
++++ ghc-8.4.4/rts/ghc.mk	2017-09-20 23:43:04.493072422 -0400
 @@ -62,11 +62,9 @@
  $(rts_AUTO_APPLY_CMM): $(GENAPPLY_INPLACE)
  	"$(GENAPPLY_INPLACE)" >$@
@@ -120,10 +120,10 @@ Index: ghc-6.12.3/rts/ghc.mk
  	cp $< $@
  
  rts_H_FILES = $(wildcard includes/*.h) $(wildcard rts/*.h)
-Index: ghc-6.12.3/rules/build-dependencies.mk
+Index: ghc-8.4.4/rules/build-dependencies.mk
 ===================================================================
---- ghc-6.12.3.orig/rules/build-dependencies.mk	2017-09-20 23:43:01.633111998 -0400
-+++ ghc-6.12.3/rules/build-dependencies.mk	2017-09-20 23:43:04.493072422 -0400
+--- ghc-8.4.4.orig/rules/build-dependencies.mk	2017-09-20 23:43:01.633111998 -0400
++++ ghc-8.4.4/rules/build-dependencies.mk	2017-09-20 23:43:04.493072422 -0400
 @@ -27,8 +27,7 @@
  
  ifneq "$$($1_$2_NO_BUILD_DEPS)" "YES"
@@ -134,10 +134,10 @@ Index: ghc-6.12.3/rules/build-dependencies.mk
  	"$$(RM)" $$(RM_OPTS) $$@.tmp
  	touch $$@.tmp
  ifneq "$$($1_$2_C_SRCS)$$($1_$2_S_SRCS)" ""
-Index: ghc-6.12.3/rules/build-perl.mk
+Index: ghc-8.4.4/rules/build-perl.mk
 ===================================================================
---- ghc-6.12.3.orig/rules/build-perl.mk	2017-09-20 23:43:01.633111998 -0400
-+++ ghc-6.12.3/rules/build-perl.mk	2017-09-20 23:43:04.493072422 -0400
+--- ghc-8.4.4.orig/rules/build-perl.mk	2017-09-20 23:43:01.633111998 -0400
++++ ghc-8.4.4/rules/build-perl.mk	2017-09-20 23:43:04.493072422 -0400
 @@ -37,8 +37,7 @@
  # INPLACE_BIN etc. might be empty if we're cleaning
  ifeq "$(findstring clean,$(MAKECMDGOALS))" ""
@@ -158,10 +158,10 @@ Index: ghc-6.12.3/rules/build-perl.mk
  	"$$(CP)" $$< $$@
  	$$(EXECUTABLE_FILE) $$@
  
-Index: ghc-6.12.3/rules/build-prog.mk
+Index: ghc-8.4.4/rules/build-prog.mk
 ===================================================================
---- ghc-6.12.3.orig/rules/build-prog.mk	2017-09-20 23:43:01.633111998 -0400
-+++ ghc-6.12.3/rules/build-prog.mk	2017-09-20 23:43:04.493072422 -0400
+--- ghc-8.4.4.orig/rules/build-prog.mk	2017-09-20 23:43:01.633111998 -0400
++++ ghc-8.4.4/rules/build-prog.mk	2017-09-20 23:43:04.493072422 -0400
 @@ -107,12 +107,10 @@
  $(call hs-objs,$1,$2,v)
  
@@ -187,10 +187,10 @@ Index: ghc-6.12.3/rules/build-prog.mk
  	"$$(CP)" -p $$< $$@
  	touch $$@
  endif
-Index: ghc-6.12.3/rules/c-suffix-rules.mk
+Index: ghc-8.4.4/rules/c-suffix-rules.mk
 ===================================================================
---- ghc-6.12.3.orig/rules/c-suffix-rules.mk	2017-09-20 23:43:01.633111998 -0400
-+++ ghc-6.12.3/rules/c-suffix-rules.mk	2017-09-20 23:43:04.493072422 -0400
+--- ghc-8.4.4.orig/rules/c-suffix-rules.mk	2017-09-20 23:43:01.633111998 -0400
++++ ghc-8.4.4/rules/c-suffix-rules.mk	2017-09-20 23:43:04.493072422 -0400
 @@ -20,8 +20,7 @@
  # UseGhcForCc is only relevant when not booting from HC files.
  ifeq "$4 $$(BootingFromHc)" "YES NO"
@@ -231,10 +231,10 @@ Index: ghc-6.12.3/rules/c-suffix-rules.mk
  	"$$(CC)" $$($1_$2_$3_ALL_CC_OPTS) -c $$< -o $$@
  
  $1/$2/build/%.$$($3_way_)s : $1/$2/build/%.c
-Index: ghc-6.12.3/rules/cmm-suffix-rules.mk
+Index: ghc-8.4.4/rules/cmm-suffix-rules.mk
 ===================================================================
---- ghc-6.12.3.orig/rules/cmm-suffix-rules.mk	2017-09-20 23:43:01.633111998 -0400
-+++ ghc-6.12.3/rules/cmm-suffix-rules.mk	2017-09-20 23:43:04.493072422 -0400
+--- ghc-8.4.4.orig/rules/cmm-suffix-rules.mk	2017-09-20 23:43:01.633111998 -0400
++++ ghc-8.4.4/rules/cmm-suffix-rules.mk	2017-09-20 23:43:04.493072422 -0400
 @@ -22,28 +22,22 @@
  
  ifneq "$$(BootingFromHc)" "YES"
@@ -270,10 +270,10 @@ Index: ghc-6.12.3/rules/cmm-suffix-rules.mk
  	"$$($1_$2_HC)" $$($1_$2_$3_MOST_HC_OPTS) -S $$< -o $$@
  
  endif
-Index: ghc-6.12.3/rules/haddock.mk
+Index: ghc-8.4.4/rules/haddock.mk
 ===================================================================
---- ghc-6.12.3.orig/rules/haddock.mk	2017-09-20 23:43:04.493072422 -0400
-+++ ghc-6.12.3/rules/haddock.mk	2017-09-20 23:44:36.025139473 -0400
+--- ghc-8.4.4.orig/rules/haddock.mk	2017-09-20 23:43:04.493072422 -0400
++++ ghc-8.4.4/rules/haddock.mk	2017-09-20 23:44:36.025139473 -0400
 @@ -38,8 +38,7 @@
  endif
  
@@ -284,10 +284,10 @@ Index: ghc-6.12.3/rules/haddock.mk
  	"$$(GHC_CABAL_INPLACE)" haddock $2 $1 --with-haddock=$$(TOP)/$$(INPLACE_BIN)/haddock --with-ghc=$$(TOP)/$$(INPLACE_BIN)/ghc-stage2 $$($1_$2_HADDOCK_FLAGS) $$($1_$2_HADDOCK_OPTS)
  
  # Make the haddocking depend on the library .a file, to ensure
-Index: ghc-6.12.3/rules/hs-suffix-rules-srcdir.mk
+Index: ghc-8.4.4/rules/hs-suffix-rules-srcdir.mk
 ===================================================================
---- ghc-6.12.3.orig/rules/hs-suffix-rules-srcdir.mk	2017-09-20 23:43:01.633111998 -0400
-+++ ghc-6.12.3/rules/hs-suffix-rules-srcdir.mk	2017-09-20 23:43:04.493072422 -0400
+--- ghc-8.4.4.orig/rules/hs-suffix-rules-srcdir.mk	2017-09-20 23:43:01.633111998 -0400
++++ ghc-8.4.4/rules/hs-suffix-rules-srcdir.mk	2017-09-20 23:43:04.493072422 -0400
 @@ -18,20 +18,16 @@
  
  ifneq "$$(BootingFromHc)" "YES"
@@ -323,10 +323,10 @@ Index: ghc-6.12.3/rules/hs-suffix-rules-srcdir.mk
  	"$$(CC)" $$($1_$2_$3_ALL_CC_OPTS) -Iincludes -x c -c $$< -o $$@
  
  $1/$2/build/%.$$($3_osuf) : $1/$2/build/%.hc includes/ghcautoconf.h includes/ghcplatform.h
-Index: ghc-6.12.3/utils/ghc-cabal/ghc.mk
+Index: ghc-8.4.4/utils/ghc-cabal/ghc.mk
 ===================================================================
---- ghc-6.12.3.orig/utils/ghc-cabal/ghc.mk	2017-09-20 23:43:04.493072422 -0400
-+++ ghc-6.12.3/utils/ghc-cabal/ghc.mk	2017-09-20 23:45:54.190725262 -0400
+--- ghc-8.4.4.orig/utils/ghc-cabal/ghc.mk	2017-09-20 23:43:04.493072422 -0400
++++ ghc-8.4.4/utils/ghc-cabal/ghc.mk	2017-09-20 23:45:54.190725262 -0400
 @@ -18,17 +18,14 @@
  CABAL_VERSION := $(subst .,$(comma),$(CABAL_DOTTED_VERSION))
  CABAL_CONSTRAINT := --constraint="Cabal == $(CABAL_DOTTED_VERSION)"
@@ -357,10 +357,10 @@ Index: ghc-6.12.3/utils/ghc-cabal/ghc.mk
  	"$(RM)" $(RM_OPTS) $@
  	echo 'import System.Environment'                                  >> $@
  	echo 'import System.Cmd'                                          >> $@
-Index: ghc-6.12.3/utils/ghc-pkg/ghc.mk
+Index: ghc-8.4.4/utils/ghc-pkg/ghc.mk
 ===================================================================
---- ghc-6.12.3.orig/utils/ghc-pkg/ghc.mk	2017-09-20 23:43:01.633111998 -0400
-+++ ghc-6.12.3/utils/ghc-pkg/ghc.mk	2017-09-20 23:43:04.493072422 -0400
+--- ghc-8.4.4.orig/utils/ghc-pkg/ghc.mk	2017-09-20 23:43:01.633111998 -0400
++++ ghc-8.4.4/utils/ghc-pkg/ghc.mk	2017-09-20 23:43:04.493072422 -0400
 @@ -30,8 +30,7 @@
  
  else
@@ -382,10 +382,10 @@ Index: ghc-6.12.3/utils/ghc-pkg/ghc.mk
  	"$(GHC)" $(SRC_HC_OPTS) --make utils/ghc-pkg/Main.hs -o $@ \
  	       -Wall -fno-warn-unused-imports \
  	       -DCABAL_VERSION=$(CABAL_VERSION) \
-Index: ghc-6.12.3/utils/mkdependC/ghc.mk
+Index: ghc-8.4.4/utils/mkdependC/ghc.mk
 ===================================================================
---- ghc-6.12.3.orig/utils/mkdependC/ghc.mk	2017-09-20 23:43:01.633111998 -0400
-+++ ghc-6.12.3/utils/mkdependC/ghc.mk	2017-09-20 23:43:04.493072422 -0400
+--- ghc-8.4.4.orig/utils/mkdependC/ghc.mk	2017-09-20 23:43:01.633111998 -0400
++++ ghc-8.4.4/utils/mkdependC/ghc.mk	2017-09-20 23:43:04.493072422 -0400
 @@ -10,8 +10,7 @@
  #
  # -----------------------------------------------------------------------------
@@ -396,10 +396,10 @@ Index: ghc-6.12.3/utils/mkdependC/ghc.mk
  	"$(RM)" $(RM_OPTS) $@
  	echo '#!$(PERL)'                               >> $@
  	echo '$$DEFAULT_TMPDIR = "$(DEFAULT_TMPDIR)";' >> $@
-Index: ghc-6.12.3/utils/runghc/ghc.mk
+Index: ghc-8.4.4/utils/runghc/ghc.mk
 ===================================================================
---- ghc-6.12.3.orig/utils/runghc/ghc.mk	2017-09-20 23:43:01.633111998 -0400
-+++ ghc-6.12.3/utils/runghc/ghc.mk	2017-09-20 23:43:04.493072422 -0400
+--- ghc-8.4.4.orig/utils/runghc/ghc.mk	2017-09-20 23:43:01.633111998 -0400
++++ ghc-8.4.4/utils/runghc/ghc.mk	2017-09-20 23:43:04.493072422 -0400
 @@ -18,8 +18,7 @@
  
  ifneq "$(BINDIST)" "YES"
@@ -410,10 +410,10 @@ Index: ghc-6.12.3/utils/runghc/ghc.mk
  	"$(CP)" $< $@
  endif
  
-Index: ghc-6.12.3/utils/hsc2hs/ghc.mk
+Index: ghc-8.4.4/utils/hsc2hs/ghc.mk
 ===================================================================
---- ghc-6.12.3.orig/utils/hsc2hs/ghc.mk
-+++ ghc-6.12.3/utils/hsc2hs/ghc.mk
+--- ghc-8.4.4.orig/utils/hsc2hs/ghc.mk
++++ ghc-8.4.4/utils/hsc2hs/ghc.mk
 @@ -45,8 +45,7 @@ endif
  # dependency to ensure these libs are built before we invoke hsc2hs:
  $(HSC2HS_INPLACE) : $(OTHER_LIBS)

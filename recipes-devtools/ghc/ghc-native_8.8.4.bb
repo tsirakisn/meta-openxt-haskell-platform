@@ -21,12 +21,13 @@ SRC_URI += " \
 BUILD_RANLIB:remove = "-D"
 
 do_configure() {
-    bbnote "FINDME: $(ranlib --version)"
-    ./configure --prefix=${prefix} CC=${CC} LD=${LD} AR=${AR} --enable-shared
+    LD_FIXED="$(echo ${LD} | sed 's/ //g')"
+    ./configure --prefix=${prefix} --enable-shared LD=`which ld` CC=`which gcc`
     echo "STANDARD_OPTS += \"-I${STAGING_INCDIR_NATIVE}\"" >> rts/ghc.mk
 }
 
 do_install:append() {
+    oe_runmake DESTDIR=${D} install
     install -m 755 "${WORKDIR}/ghc-cc" "${D}${bindir}/ghc-cc"
     install -m 755 "${WORKDIR}/ghc-ld" "${D}${bindir}/ghc-ld"
 }

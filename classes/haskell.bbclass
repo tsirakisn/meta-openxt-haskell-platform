@@ -46,9 +46,9 @@ CONFIGURE_FILES += " \
 
 RUNGHC = "runghc"
 
-GHC_PACKAGE_PATH:class-native = "${STAGING_LIBDIR_NATIVE}/ghc-6.12.3/package.conf.d"
-GHC_PACKAGE_PATH:class-target = "${STAGING_LIBDIR}/ghc-6.12.3/package.conf.d"
-export GHC_PACKAGE_PATH
+PACKAGE_DB_PATH:class-native = "${STAGING_LIBDIR_NATIVE}/ghc-8.4.4/package.conf.d"
+PACKAGE_DB_PATH:class-target = "${STAGING_LIBDIR}/ghc-8.4.4/package.conf.d"
+export PACKAGE_DB_PATH
 
 # GHC has been patched to disable generating PIE code, so we need to disable
 # PIE to be able to link any haskell programs.
@@ -81,7 +81,8 @@ do_configure() {
         --disable-executable-stripping \
         --ghc-options='-dynload sysdep
                        -pgmc ghc-cc
-                       -pgml ghc-ld' \
+                       -pgml ghc-ld
+                       -package-db="${PACKAGE_DB_PATH}"' \
         --with-gcc="ghc-cc" \
         --enable-shared \
         --prefix="${prefix}" \
@@ -147,7 +148,7 @@ do_fixup_rpath[doc] = "Amend rpath set by GHC to comply with target's environmen
 do_fixup_rpath[dirs] = "${B}"
 
 do_install() {
-    ${RUNGHC} Setup.*hs copy --copy-prefix="${D}/${prefix}" --verbose
+    ${RUNGHC} Setup.*hs copy --destdir="${D}/${prefix}" --verbose
 
     # Prepare GHC package database files.
     if [ -f "${B}/${HPN}-${HPV}.conf" ]; then

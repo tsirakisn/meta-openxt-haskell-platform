@@ -1,0 +1,23 @@
+--- a/utils/ghc-pkg/ghc.mk
++++ b/utils/ghc-pkg/ghc.mk
+@@ -55,6 +55,8 @@ utils/ghc-pkg_dist_INSTALL_INPLACE = YES
+ ghc-pkg_DIST_BINARY_NAME = ghc-pkg$(exeext0)
+ ghc-pkg_DIST_BINARY = utils/ghc-pkg/dist/build/tmp/$(ghc-pkg_DIST_BINARY_NAME)
+ 
++@echo "FINDME2: " $$(ghc-pkg_DIST_BINARY) " -- " $$(ghc-pkg_DIST_BINARY_NAME)  
++
+ # See Note [Stage1Only vs stage=1] in mk/config.mk.in.
+ ifeq "$(Stage1Only)" "YES"
+ # Install the copy of ghc-pkg from the dist directory when running 'make
+--- a/rules/build-prog.mk
++++ b/rules/build-prog.mk
+@@ -189,7 +189,8 @@ ifeq "$$($1_$2_$$($1_$2_PROGRAM_WAY)_HS_
+ # We don't want to link the GHC RTS into C-only programs. There's no
+ # point, and it confuses the test that all GHC-compiled programs
+ # were compiled with the right GHC.
+-$1_$2_$$($1_$2_PROGRAM_WAY)_GHC_LD_OPTS += -no-auto-link-packages -no-hs-main
++$(info "FINDME: $1 -- $2 -- $$($1_$2_PROGRAM_WAY) -- $$($1_$2_$$($1_$2_PROGRAM_WAY)_HS_OBJS)")
++#$1_$2_$$($1_$2_PROGRAM_WAY)_GHC_LD_OPTS += -no-auto-link-packages -no-hs-main
+ endif
+ 
+ ifneq "$$(BINDIST)" "YES"

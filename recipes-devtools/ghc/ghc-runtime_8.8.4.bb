@@ -56,6 +56,7 @@ FILES:${PN} = " \
     ${libdir}/ghc-${PV}/ghc-prim-*/*.so \
     ${libdir}/ghc-${PV}/haskell98-*/*.so \
     ${libdir}/ghc-${PV}/integer-gmp-*/*.so \
+    ${libdir}/ghc-${PV}/deepseq-*/*.so \
 "
 INSANE_SKIP:${PN} = "installed-vs-shipped"
 

@@ -46,8 +46,8 @@ CONFIGURE_FILES += " \
 
 RUNGHC = "runghc"
 
-PACKAGE_DB_PATH:class-native = "${STAGING_LIBDIR_NATIVE}/ghc-8.4.4/package.conf.d"
-PACKAGE_DB_PATH:class-target = "${STAGING_LIBDIR}/ghc-8.4.4/package.conf.d"
+PACKAGE_DB_PATH:class-native = "${STAGING_LIBDIR_NATIVE}/ghc-8.8.4/package.conf.d"
+PACKAGE_DB_PATH:class-target = "${STAGING_LIBDIR}/ghc-8.8.4/package.conf.d"
 export PACKAGE_DB_PATH
 
 # GHC has been patched to disable generating PIE code, so we need to disable

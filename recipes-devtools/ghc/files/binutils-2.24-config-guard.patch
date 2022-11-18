@@ -1,7 +1,7 @@
-Index: ghc-8.4.4/rts/Printer.c
+Index: ghc-8.8.4/rts/Printer.c
 ===================================================================
---- ghc-8.4.4.orig/rts/Printer.c
-+++ ghc-8.4.4/rts/Printer.c
+--- ghc-8.8.4.orig/rts/Printer.c
++++ ghc-8.8.4/rts/Printer.c
 @@ -808,6 +808,12 @@ static void printZcoded( const char *raw
  */
  #ifdef USING_LIBBFD
@@ -10,7 +10,7 @@ Index: ghc-8.4.4/rts/Printer.c
 +# define PACKAGE "ghc"
 +#endif
 +#ifndef PACKAGE_VERSION
-+# define PACKAGE_VERSION "8.4.4"
++# define PACKAGE_VERSION "8.8.4"
 +#endif
  #include <bfd.h>
  

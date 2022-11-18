@@ -11,7 +11,7 @@ SRC_URI += " \
 
 # This requires a ghc6 capable compiler to be already installed on the host in
 # order to bootstrap the build.
-# ghc-8.4.4 can be found: https://www.haskell.org/ghc/download_ghc_8.4.4.html
+# ghc-8.8.4 can be found: https://www.haskell.org/ghc/download_ghc_8.8.4.html
 # Get the binary package as it is not trivial to get it to build as intended, I
 # also recommend
 # http://www.edsko.net/2013/02/10/comprehensive-haskell-sandboxes/ to separate

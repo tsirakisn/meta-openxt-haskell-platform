@@ -5,6 +5,8 @@ HPV ?= "${PV}"
 
 SECTION = "devel/haskell"
 
+BB_STRICT_CHECKSUM = "0"
+
 DEPENDS:append:class-target = " \
     ghc-runtime \
 "
@@ -19,7 +21,7 @@ PACKAGES = " \
     ${PN}-dev \
 "
 FILES:${PN}:append = " \
-    ${libdir}/${HPN}-${HPV}/ghc-*/libH*.so \
+    ${libdir}/ghc-*/${HPN}-${HPV}/libH*.so \
     ${libdir}/ghc-*/package.conf.d/*.conf \
     ${bindir}/* \
 "
@@ -27,15 +29,15 @@ FILES:${PN}-doc:append = " \
     ${datadir}/* \
 "
 FILES:${PN}-staticdev:append = " \
-    ${libdir}/${HPN}-${HPV}/ghc-*/libHS*.a \
+    ${libdir}/ghc-*/${HPN}-${HPV}/libHS*.a \
 "
 FILES:${PN}-dbg:append = " \
-    ${libdir}/${HPN}-${HPV}/ghc-*/*.o \
-    ${libdir}/${HPN}-${HPV}/ghc-*/.debug \
+    ${libdir}/ghc-*/${HPN}-${HPV}/*.o \
+    ${libdir}/ghc-*/${HPN}-${HPV}/.debug \
     ${prefix}/src/debug \
 "
 FILES:${PN}-dev:append = " \
-    ${libdir}/${HPN}-${HPV}/ghc-*/* \
+    ${libdir}/ghc-*/${HPN}-${HPV}/* \
 "
 
 CONFIGURE_FILES += " \
@@ -52,16 +54,20 @@ export PACKAGE_DB_PATH
 
 # GHC has been patched to disable generating PIE code, so we need to disable
 # PIE to be able to link any haskell programs.
-SECURITY_CFLAGS = "${SECURITY_NOPIE_CFLAGS}"
+#SECURITY_CFLAGS = "${SECURITY_NOPIE_CFLAGS}"
 SECURITY_LDFLAGS = ""
+
+get_ghc_version() {
+    ghc_version=$(ghc-pkg --version)
+    echo "${ghc_version##* }"
+}
 
 # Bitbake will amend the WORKDIR paths it finds (staging stage 2). This works to
 # our advantage for native class, target class need to be configured with their
 # target dependencies, so substitute the target paths for WORKDIR starging so
 # ghc-pkg finds them.
 do_configure:prepend:class-target() {
-    ghc_version=$(ghc-pkg --version)
-    ghc_version=${ghc_version##* }
+    ghc_version=$(get_ghc_version)
     for pkgconf in ${STAGING_LIBDIR}/ghc-${ghc_version}/package.conf.d/*.conf; do
         if [ -f "${pkgconf}" ]; then
             sed -i \
@@ -72,21 +78,33 @@ do_configure:prepend:class-target() {
     done
 }
 
+# use this to pass CFLAGS, it's the only thing that works
+CFLAGS:append = "-gdwarf-4 -v"
+
+# XXX: I temporarily symlinked integer-simple to the host FS. this is a hack!
+# Need to find out why the fuck it's not using the provided libdir and using
+# the host's instead. note that you can kinda cheat this by building the host
+# lib without the integer-gmp flag...something to consider.
+
 do_configure() {
     ghc-pkg recache
+    ghc_version=$(get_ghc_version)
 
     ${RUNGHC} Setup.*hs clean --verbose
     ${RUNGHC} Setup.*hs configure \
         ${EXTRA_CABAL_CONF} \
         --disable-executable-stripping \
+        --disable-library-stripping \
         --ghc-options='-dynload sysdep
                        -pgmc ghc-cc
                        -pgml ghc-ld
-                       -package-db="${PACKAGE_DB_PATH}"' \
+                       -package-db "${PACKAGE_DB_PATH}"' \
         --with-gcc="ghc-cc" \
         --enable-shared \
-        --prefix="${prefix}" \
-        --verbose
+        --prefix=${prefix} \
+        --libsubdir="ghc-${ghc_version}/${HPN}-${HPV}" \
+        --dynlibdir="/usr/lib/ghc-${ghc_version}/${HPN}-${HPV}" \
+        --verbose=3
 }
 
 do_compile() {
@@ -119,11 +137,10 @@ do_fixup_rpath() {
     :
 }
 do_fixup_rpath:class-target() {
-    ghc_version=$(ghc-pkg --version)
-    ghc_version=${ghc_version##* }
+    ghc_version=$(get_ghc_version)
 
     for f in \
-        ${D}${libdir}/${HPN}-${HPV}/ghc-${ghc_version}/libHS${HPN}-${HPV}*.so \
+        ${D}${libdir}/ghc-${ghc_version}/${HPN}-${HPV}/libHS${HPN}-${HPV}*.so \
         ${D}${bindir}/* \
         ${D}${sbindir}/*
     do
@@ -148,12 +165,12 @@ do_fixup_rpath[doc] = "Amend rpath set by GHC to comply with target's environmen
 do_fixup_rpath[dirs] = "${B}"
 
 do_install() {
-    ${RUNGHC} Setup.*hs copy --destdir="${D}/${prefix}" --verbose
+    ${RUNGHC} Setup.*hs copy --destdir="${D}" --verbose=3
+    #${RUNGHC} Setup.*hs install --global --verbose=3
 
     # Prepare GHC package database files.
     if [ -f "${B}/${HPN}-${HPV}.conf" ]; then
-        ghc_version=$(ghc-pkg --version)
-        ghc_version=${ghc_version##* }
+        ghc_version=$(get_ghc_version)
         install -m 755 -d ${D}${libdir}/ghc-${ghc_version}/package.conf.d
         install -m 644 ${B}/${HPN}-${HPV}.conf ${D}${libdir}/ghc-${ghc_version}/package.conf.d
     fi

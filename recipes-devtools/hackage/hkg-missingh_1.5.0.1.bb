@@ -1,7 +1,9 @@
 DESCRIPTION = "MissingH is a library of all sorts of utility functions for Haskell programmers."
 LICENSE = "BSD-3-Clause"
 LIC_FILES_CHKSUM="file://LICENSE;md5=a3f429921821e7b143248149ab577a40"
-DEPENDS += "hkg-mtl hkg-hslogger hkg-regex-compat hkg-hunit"
+DEPENDS += "hkg-hslogger hkg-regex-compat hkg-hunit"
+
+HPN = "MissingH"
 
 inherit hackage
 

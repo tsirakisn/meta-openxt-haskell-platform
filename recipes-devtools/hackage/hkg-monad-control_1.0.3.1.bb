@@ -9,7 +9,6 @@ SRC_URI[sha256sum] = "c17fd5fa094044816ab79158a00fa7a9fd8b35dfea27e1eecc4d4049b3
 
 DEPENDS += " \
     hkg-base-unicode-symbols \
-    hkg-transformers \
     hkg-transformers-base \
 "
 

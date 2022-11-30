@@ -1,7 +1,7 @@
 DESCRIPTION = "Regex library for GHC"
 LICENSE = "BSD-3-Clause"
 LIC_FILES_CHKSUM="file://LICENSE;md5=5a9760d05990120048023e30741b4d71"
-DEPENDS += "hkg-mtl hkg-regex-posix"
+DEPENDS += "hkg-regex-posix"
 
 inherit hackage
 

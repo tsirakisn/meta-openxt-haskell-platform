@@ -1,7 +1,7 @@
 DESCRIPTION = "A logging framework for Haskell, roughly similar to Python's logging module."
 LICENSE = "LGPL"
 LIC_FILES_CHKSUM="file://COPYRIGHT;md5=4828ddb0f563948f833140ead96b205b"
-DEPENDS += "hkg-mtl hkg-network"
+DEPENDS += "hkg-network"
 
 inherit hackage
 

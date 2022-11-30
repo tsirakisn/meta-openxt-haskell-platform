@@ -8,6 +8,8 @@ inherit hackage
 SRC_URI[md5sum] = "b834809dc5c4ac4d1e519d8d6c456600"
 SRC_URI[sha256sum] = "fdbcbc28196d616b449bf3e46c30dcd5577dc92f290458e2dbdbfc5a65de327a"
 
+DEPENDS:append = "hkg-call-stack"
+
 PR = "r1"
 
 RDEPENDS:${HPN} += "libc6"

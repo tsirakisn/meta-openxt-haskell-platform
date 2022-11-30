@@ -54,7 +54,7 @@ export PACKAGE_DB_PATH
 
 # GHC has been patched to disable generating PIE code, so we need to disable
 # PIE to be able to link any haskell programs.
-#SECURITY_CFLAGS = "${SECURITY_NOPIE_CFLAGS}"
+SECURITY_CFLAGS = "${SECURITY_NOPIE_CFLAGS}"
 SECURITY_LDFLAGS = ""
 
 get_ghc_version() {
@@ -78,6 +78,18 @@ do_configure:prepend:class-target() {
     done
 }
 
+# TODO: check for Simple?
+do_configure:prepend() {
+    if [[ -n "$(find ${S} -name 'Setup*.hs')" ]]; then
+        return
+    fi
+
+    cat <<EOF > "${S}/Setup.hs"
+import Distribution.Simple
+main = defaultMain
+EOF
+}
+
 # use this to pass CFLAGS, it's the only thing that works
 CFLAGS:append = "-gdwarf-4 -v"
 
@@ -90,7 +102,10 @@ do_configure() {
     ghc-pkg recache
     ghc_version=$(get_ghc_version)
 
-    ${RUNGHC} Setup.*hs clean --verbose
+    if [[ -d "${S}/dist" ]]; then
+        ${RUNGHC} Setup.*hs clean --verbose
+    fi
+
     ${RUNGHC} Setup.*hs configure \
         ${EXTRA_CABAL_CONF} \
         --disable-executable-stripping \
@@ -98,8 +113,12 @@ do_configure() {
         --ghc-options='-dynload sysdep
                        -pgmc ghc-cc
                        -pgml ghc-ld
+                       -v3
+                       -clear-package-db
                        -package-db "${PACKAGE_DB_PATH}"' \
         --with-gcc="ghc-cc" \
+        --with-ld="ghc-ld" \
+        --ghc-pkg-options="--package-db=${PACKAGE_DB_PATH}" \
         --enable-shared \
         --prefix=${prefix} \
         --libsubdir="ghc-${ghc_version}/${HPN}-${HPV}" \
@@ -113,13 +132,16 @@ do_compile() {
                        -pgmc ghc-cc
                        -pgml ghc-ld' \
         --with-gcc="ghc-cc" \
-        --verbose
+        --with-ld="ghc-ld" \
+        --with-hsc2hs="${STAGING_BINDIR_NATIVE}/hsc2hs" \
+        --hsc2hs-options="-c ghc-cc -l ghc-ld -x" \
+        --verbose=3
 }
 
 do_local_package_conf() {
     ${RUNGHC} Setup.*hs register \
         --gen-pkg-conf \
-        --verbose
+        --verbose=3
     if [ -f "${S}/${HPN}-${HPV}.conf" ]; then
         sed -i -e "s| ${D}${prefix}| ${prefix}|" ${S}/${HPN}-${HPV}.conf
     fi
@@ -166,7 +188,6 @@ do_fixup_rpath[dirs] = "${B}"
 
 do_install() {
     ${RUNGHC} Setup.*hs copy --destdir="${D}" --verbose=3
-    #${RUNGHC} Setup.*hs install --global --verbose=3
 
     # Prepare GHC package database files.
     if [ -f "${B}/${HPN}-${HPV}.conf" ]; then

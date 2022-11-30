@@ -13,13 +13,9 @@ SRC_URI =+ " \
     file://functor-fix.patch \
 "
 DEPENDS += " \
-    hkg-binary \
     hkg-data-binary-ieee754 \
     hkg-haxml \
-    hkg-mtl \
     hkg-network \
-    hkg-parsec \
-    hkg-text \
 "
 
 PR = "r1"

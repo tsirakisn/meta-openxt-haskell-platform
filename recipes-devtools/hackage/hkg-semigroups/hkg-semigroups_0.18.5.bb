@@ -7,10 +7,4 @@ inherit hackage
 SRC_URI[md5sum] = "f406607e0421554cde40594b65f83086"
 SRC_URI[sha256sum] = "ecd8b368215fbd697f6508dcac77b153ac02b9a1568694bdc886d998091d833c"
 
-FILESEXTRAPATHS:prepend := "${THISDIR}/patches:"
-SRC_URI =+ " \
-    file://semigroups-cabal-cheat.patch \
-    file://semigroups-derive-data-typeable.patch \
-"
-
 PR = "r1"

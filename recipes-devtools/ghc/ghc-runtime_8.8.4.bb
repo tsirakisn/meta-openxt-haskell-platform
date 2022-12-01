@@ -31,6 +31,10 @@ do_configure:append() {
 PACKAGES = " \
     ${PN} \
 "
+
+# TO-ADD:
+# - libHSmtl
+
 FILES:${PN} = " \
     ${libdir}/ghc-${PV}/array-*/*.so \
     ${libdir}/ghc-${PV}/base-*/*.so \

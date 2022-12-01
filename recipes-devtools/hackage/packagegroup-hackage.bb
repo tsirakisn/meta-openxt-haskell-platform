@@ -10,18 +10,7 @@ CONFIGURE_ERROR = "\
 "
 
 COMPILER_ERROR = "\
-    hkg-cereal \
-    hkg-comonad \
     hkg-data-binary-ieee754 \
-    hkg-hashable \
-    hkg-haxml \
-    hkg-hsyslog \
-    hkg-hunit \
-    hkg-integer-logarithms \
-    hkg-json \
-    hkg-monadprompt \
-    hkg-regex-posix \
-    hkg-storable-endian \
     hkg-transformers-base \
     hkg-vhd \
 "
@@ -40,6 +29,7 @@ DEPENDS_ON_BROKEN_PKG = "\
     hkg-dbus-core \
     hkg-either \
     hkg-errors \
+    hkg-haxml \
     hkg-hinotify \
     hkg-hslogger \
     hkg-http \
@@ -66,16 +56,26 @@ RDEPENDS:${PN} = "\
     hkg-base-unicode-symbols \
     hkg-byteorder \
     hkg-call-stack \
+    hkg-cereal \
+    hkg-comonad \
     hkg-contravariant \
     hkg-curl \
+    hkg-hashable \
+    hkg-hsyslog \
+    hkg-hunit \
+    hkg-integer-logarithms \
+    hkg-json \
     hkg-mmap \
     hkg-monad-loops \
+    hkg-monadprompt \
     hkg-polyparse \
     hkg-primitive \
     hkg-regex-base \
+    hkg-regex-posix \
     hkg-safe \
     hkg-semigroups \
     hkg-split \
+    hkg-storable-endian \
     hkg-tagged \
     hkg-transformers-compat \
     hkg-utf8-string \

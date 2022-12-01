@@ -46,6 +46,7 @@ CONFIGURE_FILES += " \
     ${S}/${HPN}.cabal \
 "
 
+#RUNGHC = "${STAGING_BINDIR_NATIVE}/runghc -f ${STAGING_BINDIR_NATIVE}/ghc"
 RUNGHC = "runghc"
 
 PACKAGE_DB_PATH:class-native = "${STAGING_LIBDIR_NATIVE}/ghc-8.8.4/package.conf.d"
@@ -80,14 +81,10 @@ do_configure:prepend:class-target() {
 
 # TODO: check for Simple?
 do_configure:prepend() {
-    if [[ -n "$(find ${S} -name 'Setup*.hs')" ]]; then
-        return
+    if [ ! -e "${S}/Setup.hs" ] && [ ! -e "${S}/Setup.lhs" ] ; then
+        echo "import Distribution.Simple" > "${S}/Setup.hs"
+        echo "main = defaultMain" >> "${S}/Setup.hs"
     fi
-
-    cat <<EOF > "${S}/Setup.hs"
-import Distribution.Simple
-main = defaultMain
-EOF
 }
 
 # use this to pass CFLAGS, it's the only thing that works
@@ -100,41 +97,36 @@ CFLAGS:append = "-gdwarf-4 -v"
 
 do_configure() {
     ghc-pkg recache
+    ghc-pkg --package-db "${PACKAGE_DB_PATH}" recache
     ghc_version=$(get_ghc_version)
 
     if [[ -d "${S}/dist" ]]; then
         ${RUNGHC} Setup.*hs clean --verbose
     fi
 
-    ${RUNGHC} Setup.*hs configure \
+    ${RUNGHC} -v3 Setup.*hs configure \
         ${EXTRA_CABAL_CONF} \
         --disable-executable-stripping \
         --disable-library-stripping \
         --ghc-options='-dynload sysdep
                        -pgmc ghc-cc
                        -pgml ghc-ld
-                       -v3
-                       -clear-package-db
                        -package-db "${PACKAGE_DB_PATH}"' \
         --with-gcc="ghc-cc" \
         --with-ld="ghc-ld" \
+        --with-ghc-pkg="${STAGING_BINDIR_NATIVE}/ghc-pkg" \
+        --with-hsc2hs="${STAGING_BINDIR_NATIVE}/hsc2hs" \
+        --hsc2hs-options="-c ghc-cc -l ghc-ld -x" \
         --ghc-pkg-options="--package-db=${PACKAGE_DB_PATH}" \
-        --enable-shared \
-        --prefix=${prefix} \
         --libsubdir="ghc-${ghc_version}/${HPN}-${HPV}" \
         --dynlibdir="/usr/lib/ghc-${ghc_version}/${HPN}-${HPV}" \
+        --enable-shared \
+        --prefix=${prefix} \
         --verbose=3
 }
 
 do_compile() {
-    ${RUNGHC} Setup.*hs build \
-        --ghc-options='-dynload sysdep
-                       -pgmc ghc-cc
-                       -pgml ghc-ld' \
-        --with-gcc="ghc-cc" \
-        --with-ld="ghc-ld" \
-        --with-hsc2hs="${STAGING_BINDIR_NATIVE}/hsc2hs" \
-        --hsc2hs-options="-c ghc-cc -l ghc-ld -x" \
+    ${RUNGHC} -v3 Setup.*hs build \
         --verbose=3
 }
 

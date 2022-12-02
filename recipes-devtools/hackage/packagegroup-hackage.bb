@@ -6,22 +6,26 @@ LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/GPL-2.0-only;md5=801f80980d171d
 inherit packagegroup
 
 COMPILER_ERROR = "\
-    hkg-data-binary-ieee754 \
     hkg-vhd \
     hkg-xenstore \
 "
 
 DEPRECATED = "\
+    hkg-data-binary-ieee754 \
+    hkg-dbus-core \
     hkg-network-bytestring \
 "
 
-DEPENDS_ON_BROKEN_PKG = "\
-    hkg-dbus-core \
+NO_LONGER_NEEDED = "\
+    hkg-haxml \
+    hkg-hxt \
+    hkg-hxt-charproperties \
+    hkg-hxt-regex-xmlschema \
+    hkg-hxt-unicode \
 "
 
 CANT_FIND_DEPENDS = "\
     hkg-attoparsec \
-    hkg-haxml \
 "
 
 NEEDS_OLDER_DEPENDS = "\
@@ -47,10 +51,6 @@ RDEPENDS:${PN} = "\
     hkg-hinotify \
     hkg-hsyslog \
     hkg-hunit \
-    hkg-hxt \
-    hkg-hxt-charproperties \
-    hkg-hxt-regex-xmlschema \
-    hkg-hxt-unicode \
     hkg-integer-logarithms \
     hkg-json \
     hkg-lifted-base \

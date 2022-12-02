@@ -13,6 +13,7 @@ DEPENDS += " \
     hkg-hxt-regex-xmlschema \
     hkg-hxt-unicode \
     hkg-network \
+    hkg-network-uri \
 "
 
 PR = "r1"

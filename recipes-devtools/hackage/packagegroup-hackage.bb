@@ -5,78 +5,73 @@ LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/GPL-2.0-only;md5=801f80980d171d
 
 inherit packagegroup
 
-CONFIGURE_ERROR = "\
-    hkg-network \
-"
-
 COMPILER_ERROR = "\
     hkg-data-binary-ieee754 \
-    hkg-transformers-base \
     hkg-vhd \
-"
-
-# not technically needed
-CANT_FIND_DEPENDS = "\
-    hkg-distributive \
-"
-
-LINKER_ERROR = "\
-    hkg-base64-bytestring \
-"
-
-DEPENDS_ON_BROKEN_PKG = "\
-    hkg-async \
-    hkg-dbus-core \
-    hkg-either \
-    hkg-errors \
-    hkg-haxml \
-    hkg-hinotify \
-    hkg-hslogger \
-    hkg-http \
-    hkg-hxt \
-    hkg-hxt-charproperties \
-    hkg-hxt-regex-xmlschema \
-    hkg-hxt-unicode \
-    hkg-lifted-base \
-    hkg-missingh \
-    hkg-monad-control \
-    hkg-network-bytestring \
-    hkg-regex-compat \
-    hkg-semigroupoids \
     hkg-xenstore \
 "
 
-MISSING_NEW_PKGS = "\
+DEPRECATED = "\
+    hkg-network-bytestring \
+"
+
+DEPENDS_ON_BROKEN_PKG = "\
+    hkg-dbus-core \
+"
+
+CANT_FIND_DEPENDS = "\
     hkg-attoparsec \
+    hkg-haxml \
+"
+
+NEEDS_OLDER_DEPENDS = "\
+    hkg-hslogger \
+    hkg-http \
 "
 
 # building
 RDEPENDS:${PN} = "\
+    hkg-async \
     hkg-base-orphans \
     hkg-base-unicode-symbols \
+    hkg-base64-bytestring \
     hkg-byteorder \
     hkg-call-stack \
     hkg-cereal \
     hkg-comonad \
     hkg-contravariant \
     hkg-curl \
+    hkg-either \
+    hkg-errors \
     hkg-hashable \
+    hkg-hinotify \
     hkg-hsyslog \
     hkg-hunit \
+    hkg-hxt \
+    hkg-hxt-charproperties \
+    hkg-hxt-regex-xmlschema \
+    hkg-hxt-unicode \
     hkg-integer-logarithms \
     hkg-json \
+    hkg-lifted-base \
+    hkg-missingh \
     hkg-mmap \
+    hkg-monad-control \
     hkg-monad-loops \
     hkg-monadprompt \
+    hkg-network \
     hkg-polyparse \
     hkg-primitive \
     hkg-regex-base \
+    hkg-regex-compat \
     hkg-regex-posix \
     hkg-safe \
     hkg-semigroups \
+    hkg-semigroupoids \
     hkg-split \
     hkg-storable-endian \
     hkg-tagged \
+    hkg-transformers-base \
     hkg-transformers-compat \
     hkg-utf8-string \
     hkg-zlib \

@@ -32,9 +32,6 @@ PACKAGES = " \
     ${PN} \
 "
 
-# TO-ADD:
-# - libHSmtl
-
 FILES:${PN} = " \
     ${libdir}/ghc-${PV}/array-*/*.so \
     ${libdir}/ghc-${PV}/base-*/*.so \
@@ -54,6 +51,7 @@ FILES:${PN} = " \
     ${libdir}/ghc-${PV}/libHSrts_debug-ghc${PV}.so \
     ${libdir}/ghc-${PV}/libHSrts_thr-ghc${PV}.so \
     ${libdir}/ghc-${PV}/libHSrts_thr_debug-ghc${PV}.so \
+    ${libdir}/ghc-${PV}/mtl-*/*.so \
     ${libdir}/ghc-${PV}/old-locale-*/*.so \
     ${libdir}/ghc-${PV}/old-time-*/*.so \
     ${libdir}/ghc-${PV}/parsec-*/*.so \

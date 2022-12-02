@@ -7,6 +7,13 @@ inherit hackage
 SRC_URI[md5sum] = ""
 SRC_URI[sha256sum] = ""
 
-DEPENDS:append = "hkg-hashable hkg-scientific"
+DEPENDS:append = "\
+    hkg-base-orphans \
+    hkg-bifunctors \
+    hkg-comonad \
+    hkg-contravariant \
+    hkg-distributive \
+    hkg-tagged \
+"
 
 PR = "r1"

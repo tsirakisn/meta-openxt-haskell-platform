@@ -7,6 +7,13 @@ inherit hackage
 SRC_URI[md5sum] = ""
 SRC_URI[sha256sum] = ""
 
-DEPENDS:append = "hkg-hashable hkg-scientific"
+FILESEXTRAPATHS:prepend := "${THISDIR}/patches:"
+SRC_URI += "\
+    file://bump-supported-base-lib.patch \
+"
+
+DEPENDS:append = "\
+    hkg-old-locale \
+"
 
 PR = "r1"

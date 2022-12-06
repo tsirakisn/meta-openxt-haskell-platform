@@ -7,7 +7,10 @@ inherit hackage
 SRC_URI[md5sum] = ""
 SRC_URI[sha256sum] = ""
 
-DEPENDS:append = "hkg-basement hkg-memory"
-EXTRA_CABAL_CONF:append = "-f-integer-gmp"
+DEPENDS:append = "\
+    hkg-basement \
+    hkg-integer-gmp \
+    hkg-memory \
+"
 
 PR = "r1"

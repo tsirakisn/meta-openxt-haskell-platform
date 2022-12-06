@@ -8,8 +8,15 @@ SRC_URI[md5sum] = ""
 SRC_URI[sha256sum] = ""
 
 DEPENDS:append = "\
-    hkg-base-orphans \
-    hkg-integer-gmp \
+    hkg-bifunctors \
+    hkg-comonad \
+    hkg-contravariant \
+    hkg-profunctors \
+    hkg-statevar \
+    hkg-tagged \
+    hkg-th-abstraction \
+    hkg-transformers-compat \
+    hkg-unordered-containers \
 "
 
 PR = "r1"

@@ -12,4 +12,5 @@ DEPENDS:append = "\
     hkg-hashable \
 "
 
+HPN = "OneTuple"
 PR = "r1"

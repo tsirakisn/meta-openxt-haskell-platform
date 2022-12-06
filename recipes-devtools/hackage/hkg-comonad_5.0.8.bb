@@ -7,17 +7,12 @@ inherit hackage
 SRC_URI[md5sum] = "97d47d6908e1d12e46dd5394fd7494bc"
 SRC_URI[sha256sum] = "5f79b15a4bf87572c3b38610ef9403f4ac6a48dc493c311f0edb241adda5ba0f"
 
-EXTRA_CABAL_CONF:append = "-f-indexed-traversable"
-
 DEPENDS += " \
     hkg-distributive \
+    hkg-indexed-traversable \
     hkg-semigroups \
     hkg-tagged \
     hkg-transformers-compat \
 "
-
-#do_compile:prepend() {
-#    ghc-pkg -f ${PACKAGE_DB_PATH} list --verbose=2 > /home/build/openxt/ghc-pkg.log
-#}
 
 PR = "r1"

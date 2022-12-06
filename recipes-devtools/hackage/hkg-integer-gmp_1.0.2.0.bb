@@ -7,8 +7,8 @@ inherit hackage
 SRC_URI[md5sum] = ""
 SRC_URI[sha256sum] = ""
 
-DEPENDS:append = "\
-    hkg-ghc-bignum \
-"
+do_install:prepend() {
+    echo "#include <gmp.h>" > ${S}/dist/build/include/ghc-gmp.h    
+}
 
 PR = "r1"

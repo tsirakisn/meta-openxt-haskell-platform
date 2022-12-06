@@ -8,7 +8,7 @@ SRC_URI[md5sum] = ""
 SRC_URI[sha256sum] = ""
 
 DEPENDS:append = "\
-    hkg-th-abstraction
+    hkg-th-abstraction \
 "
 
 PR = "r1"

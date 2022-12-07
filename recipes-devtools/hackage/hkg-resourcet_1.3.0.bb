@@ -9,6 +9,7 @@ SRC_URI[sha256sum] = ""
 
 DEPENDS:append = "\
     hkg-exceptions \
+    hkg-primitive \
     hkg-unliftio-core \
 "
 

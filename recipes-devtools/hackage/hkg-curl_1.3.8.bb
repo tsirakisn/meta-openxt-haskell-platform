@@ -8,5 +8,6 @@ SRC_URI[md5sum] = "5fc326cec592b0e2085b7884e079428b"
 SRC_URI[sha256sum] = "f1410ca81fffff241678d287588b201285c6c9637d6db5d90af6952bc639cd44"
 
 DEPENDS += "curl"
+EXTRA_CABAL_CONF:append = "--extra-lib-dirs=${STAGING_LIBDIR}"
 
 PR = "r1"

@@ -11,4 +11,14 @@ DEPENDS:append = "\
     hkg-scientific \
 "
 
+#do_compile() {
+#    ${RUNGHC} -v3 Setup.*hs build attoparsec-internal \
+#        --verbose=3
+#
+#    ghc-pkg --package-db dist/package.conf.inplace recache
+#
+#    ${RUNGHC} -v3 Setup.*hs build attoparsec-external \
+#        --verbose=3
+#}
+
 PR = "r1"

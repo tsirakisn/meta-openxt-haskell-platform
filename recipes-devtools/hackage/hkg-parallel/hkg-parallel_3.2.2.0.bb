@@ -7,8 +7,9 @@ inherit hackage
 SRC_URI[md5sum] = ""
 SRC_URI[sha256sum] = ""
 
-do_install:prepend() {
-    echo "#include <gmp.h>" > ${S}/dist/build/include/ghc-gmp.h    
-}
+FILESEXTRAPATHS:prepend := "${THISDIR}/patches:"
+SRC_URI += "\
+    file://bump-supported-base-lib.patch \
+"
 
 PR = "r1"

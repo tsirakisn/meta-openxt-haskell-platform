@@ -17,11 +17,20 @@ DEPRECATED = "\
 "
 
 NO_LONGER_NEEDED = "\
+    hkg-base64-bytestring \
+    hkg-curl \
     hkg-haxml \
+    hkg-hslogger \
+    hkg-hunit \
     hkg-hxt \
     hkg-hxt-charproperties \
     hkg-hxt-regex-xmlschema \
     hkg-hxt-unicode \
+    hkg-missingh \
+    hkg-old-locale \
+    hkg-old-time \
+    hkg-polyparse \
+    hkg-regex-compat \
 "
 
 CANT_FIND_DEPENDS = "\
@@ -29,7 +38,6 @@ CANT_FIND_DEPENDS = "\
 "
 
 NEEDS_OLDER_DEPENDS = "\
-    hkg-hslogger \
     hkg-http \
 "
 
@@ -38,32 +46,26 @@ RDEPENDS:${PN} = "\
     hkg-async \
     hkg-base-orphans \
     hkg-base-unicode-symbols \
-    hkg-base64-bytestring \
     hkg-byteorder \
     hkg-call-stack \
     hkg-cereal \
     hkg-comonad \
     hkg-contravariant \
-    hkg-curl \
     hkg-either \
     hkg-errors \
     hkg-hashable \
     hkg-hinotify \
     hkg-hsyslog \
-    hkg-hunit \
     hkg-integer-logarithms \
     hkg-json \
     hkg-lifted-base \
-    hkg-missingh \
     hkg-mmap \
     hkg-monad-control \
     hkg-monad-loops \
     hkg-monadprompt \
     hkg-network \
-    hkg-polyparse \
     hkg-primitive \
     hkg-regex-base \
-    hkg-regex-compat \
     hkg-regex-posix \
     hkg-safe \
     hkg-semigroups \

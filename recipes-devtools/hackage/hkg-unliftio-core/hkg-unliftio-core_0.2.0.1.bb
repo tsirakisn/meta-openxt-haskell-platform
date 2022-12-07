@@ -7,4 +7,9 @@ inherit hackage
 SRC_URI[md5sum] = ""
 SRC_URI[sha256sum] = ""
 
+FILESEXTRAPATHS:prepend := "${THISDIR}/patches:"
+SRC_URI += "\
+    file://bump-supported-base-version.patch \
+"
+
 PR = "r1"

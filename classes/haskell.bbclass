@@ -49,8 +49,8 @@ CONFIGURE_FILES += " \
 #RUNGHC = "${STAGING_BINDIR_NATIVE}/runghc -f ${STAGING_BINDIR_NATIVE}/ghc"
 RUNGHC = "runghc"
 
-PACKAGE_DB_PATH:class-native = "${STAGING_LIBDIR_NATIVE}/ghc-8.8.4/package.conf.d"
-PACKAGE_DB_PATH:class-target = "${STAGING_LIBDIR}/ghc-8.8.4/package.conf.d"
+PACKAGE_DB_PATH:class-native = "${STAGING_LIBDIR_NATIVE}/ghc-8.10.7/package.conf.d"
+PACKAGE_DB_PATH:class-target = "${STAGING_LIBDIR}/ghc-8.10.7/package.conf.d"
 
 # GHC has been patched to disable generating PIE code, so we need to disable
 # PIE to be able to link any haskell programs.
@@ -89,11 +89,6 @@ do_configure:prepend() {
 # use this to pass CFLAGS, it's the only thing that works
 CFLAGS:append = "-gdwarf-4 -v"
 
-# XXX: I temporarily symlinked integer-simple to the host FS. this is a hack!
-# Need to find out why the fuck it's not using the provided libdir and using
-# the host's instead. note that you can kinda cheat this by building the host
-# lib without the integer-gmp flag...something to consider.
-
 do_configure() {
     ghc-pkg recache
     ghc-pkg --package-db "${PACKAGE_DB_PATH}" recache
@@ -123,7 +118,7 @@ do_configure() {
         --dynlibdir="/usr/lib/ghc-${ghc_version}/${HPN}-${HPV}" \
         --enable-shared \
         --prefix="${prefix}" \
-        --verbose
+        --verbose=3
 }
 
 do_compile() {

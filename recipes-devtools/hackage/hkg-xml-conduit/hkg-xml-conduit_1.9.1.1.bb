@@ -7,17 +7,19 @@ inherit hackage
 SRC_URI[md5sum] = ""
 SRC_URI[sha256sum] = ""
 
+FILESEXTRAPATHS:prepend := "${THISDIR}/patches:"
+SRC_URI += "\
+    file://fix-build.patch \
+"
+
 DEPENDS:append = "\
-    hkg-cereal \
+    hkg-attoparsec \
+    hkg-blaze-html \
+    hkg-blaze-markup \
     hkg-conduit \
-    hkg-exceptions \
-    hkg-lens \
-    hkg-network \
-    hkg-random \
-    hkg-split \
-    hkg-th-lift \
-    hkg-vector \
-    hkg-xml-conduit \
+    hkg-conduit-extra \
+    hkg-data-default-class \
+    hkg-resourcet \
     hkg-xml-types \
 "
 

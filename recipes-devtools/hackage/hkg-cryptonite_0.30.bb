@@ -9,7 +9,6 @@ SRC_URI[sha256sum] = ""
 
 DEPENDS:append = "\
     hkg-basement \
-    hkg-integer-gmp \
     hkg-memory \
 "
 

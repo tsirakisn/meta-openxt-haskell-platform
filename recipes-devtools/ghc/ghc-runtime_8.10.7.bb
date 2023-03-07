@@ -6,7 +6,7 @@ require ghc-${PV}.inc
 PACKAGES = " \
     ${PN} \
 "
-FILES_${PN} = " \
+FILES:${PN} = " \
     ${libdir}/ghc-${PV}/array-*/*.so \
     ${libdir}/ghc-${PV}/base-*/*.so \
     ${libdir}/ghc-${PV}/binary-*/*.so \
@@ -42,13 +42,13 @@ FILES_${PN} = " \
     ${libdir}/ghc-${PV}/unix-*/*.so \
     ${libdir}/ghc-${PV}/utf8-string-*/*.so \
 "
-INSANE_SKIP_${PN} = "installed-vs-shipped"
+INSANE_SKIP:${PN} = "installed-vs-shipped"
 
 DEPENDS += " \
     ghc-native \
     libffi \
 "
-BUILD_RANLIB_remove = "-D"
+BUILD_RANLIB:remove = "-D"
 
 do_configure() {
     ./configure --prefix=${prefix} \

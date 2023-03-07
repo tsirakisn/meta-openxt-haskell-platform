@@ -5,7 +5,7 @@ HPV ?= "${PV}"
 
 SECTION = "devel/haskell"
 
-DEPENDS:append:class-target += " \
+DEPENDS:append:class-target = " \
     ghc-runtime \
 "
 DEPENDS:append = " \

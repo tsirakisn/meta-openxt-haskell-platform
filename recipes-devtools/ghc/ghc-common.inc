@@ -5,6 +5,7 @@ SECTION = "devel/haskell"
 
 DEPENDS += " \
     binutils \
+    m4-native \
 "
 
 S = "${WORKDIR}/ghc-${PV}"
